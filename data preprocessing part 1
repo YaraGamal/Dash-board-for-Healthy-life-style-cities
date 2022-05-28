@@ -1,0 +1,82 @@
+pip install pandas
+
+
+pip install dash
+
+
+pip install jupyter-dash
+
+
+from dash import Dash, html, dcc
+import plotly.express as px
+import pandas as pd
+import plotly.graph_objects as go
+import numpy as np
+from dash import dash_table
+from dash.dependencies import Input, Output
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+
+# Dataset Processing
+
+#importing data
+data = pd.read_csv('healthy.csv')
+data.info()
+data.head()
+df = data.drop_duplicates()
+
+
+data['Cost of a bottle of water(City)'] = data['Cost of a bottle of water(City)'].str.replace(r'\£', '')
+data['Cost of a monthly gym membership(City)'] = data['Cost of a monthly gym membership(City)'].str.replace(r'\£', '')
+data['Obesity levels(Country)'] = data['Obesity levels(Country)'].str.replace(r'\%', '')
+data=data._convert(numeric=True)
+data
+
+
+fig = px.scatter(data, x="Obesity levels(Country)", y="Life expectancy(years) (Country)")
+fig.show()
+
+import seaborn as sn
+corrMatrix = data.corr()
+plt.subplots(figsize=(20,15))
+
+sn.heatmap(corrMatrix, annot=True)
+
+plt.show()
+
+data
+
+del data['Cost of a monthly gym membership(City)']
+
+del data['Sunshine hours(City)']
+
+data
+
+del data['Number of take out places(City)']
+
+data
+
+pip install dash-bootstrap-components
+
+
+import dash_bootstrap_components as dbc
+import dash
+
+
+app = Dash(external_stylesheets=[dbc.themes.CYBORG])
+
+app.layout = dbc.DropdownMenu([
+
+    dbc.Row(
+        dbc.Col(html.H1("Healthy Lifestyle Dashboard",
+                        className='text-center text-primary mb-4'),
+                width=12)
+    )
+    
+
+BS = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+app = dash.Dash(external_stylesheets=[BS])
+
+
+
